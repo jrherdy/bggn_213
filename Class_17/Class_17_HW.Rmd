@@ -1,0 +1,114 @@
+---
+title: "Class_17 Homework"
+author: "Joseph Herdy"
+date: "3/4/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+url <- "https://tinyurl.com/COVID-2019"
+virus <- read.csv(url)
+tail(virus)
+```
+
+>Q1 How many total infected cases are there worldwide?
+
+```{r}
+cases <- sum(virus$cases)
+cases
+```
+
+
+>Q2 How many deaths linked to infected cases have there been?
+
+```{r}
+inds <- virus$type == "death"
+
+virus[inds,"cases"]
+
+deaths <- sum(virus[inds,"cases"])
+
+deaths
+```
+
+
+>Q3 what is the overall death rate?
+
+```{r}
+(deaths/cases)*100
+```
+
+
+>Q4 What is the death rate in Mainland China?
+
+```{r}
+china_inds <- virus$Country.Region =="Mainland China"
+virus_china <- virus[china_inds,]
+
+china_inds_death <- virus_china$type == "death"
+
+China_deaths <- sum(virus_china[china_inds_death,"cases"])
+
+china_inds_survive <- virus_china$type != "death"
+
+China_survive <- sum(virus_china[china_inds_survive, "cases"])
+
+(China_deaths/China_survive)*100
+```
+
+
+>Q5 What is the death rate in Italy, Iran, and the US?
+
+```{r}
+italy_inds <- virus$Country.Region =="Italy"
+US_inds <- virus$Country.Region =="US"
+Iran_inds <- virus$Country.Region =="Iran"
+
+virus_italy <- virus[italy_inds,]
+virus_us <- virus[US_inds,]
+virus_iran <- virus[Iran_inds,]
+
+
+
+```
+
+#Italy Death Rate
+```{r}
+italy_inds_death <- virus_italy$type == "death"
+italy_inds_survive <- virus_italy$type != "death"
+
+italy_deaths <- sum(virus_italy[italy_inds_death,"cases"])
+italy_survive <- sum(virus_italy[italy_inds_survive,"cases"])
+
+(italy_deaths/italy_survive)*100
+```
+
+#US Death Rate
+```{r}
+us_inds_death <- virus_us$type == "death"
+us_inds_survive <- virus_us$type != "death"
+
+us_deaths <- sum(virus_us[us_inds_death,"cases"])
+us_survive <- sum(virus_us[us_inds_survive,"cases"])
+
+(us_deaths/us_survive)*100
+```
+
+#Iran Death Rate
+```{r}
+
+iran_inds_death <- virus_iran$type == "death"
+iran_inds_survive <- virus_iran$type != "death"
+
+iran_deaths <- sum(virus_iran[iran_inds_death,"cases"])
+iran_survive <- sum(virus_iran[iran_inds_survive,"cases"])
+
+(iran_deaths/iran_survive)*100
+```
+
+
+
