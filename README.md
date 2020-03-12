@@ -1,11 +1,17 @@
 # bggn_213
 
-This is my classwork from class 11 BGGN 213
-
-ayyyyyy lmaoooooooo
-
-what about a conflict?
+This is the coding catalog from BGGN 213 Winter 2020
 
 class website: https://bioboot.github.io/bggn213_W20/
+
+Class1:
+
+Class2:
+
+Class3:
+
+Class4:
+
+Class5
 
 
