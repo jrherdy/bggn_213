@@ -1,8 +1,8 @@
-# bggn_213
+# BGGN 213 Winter 2020 Class Git Site
 
-This is the coding catalog from BGGN 213 Winter 2020
+This is the coding catalog from [BGGN 213 Winter 2020](https://bioboot.github.io/bggn213_W20/) 
 
-class website: https://bioboot.github.io/bggn213_W20/
+## Content
 
 Class1:
 
