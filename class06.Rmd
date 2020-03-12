@@ -1,0 +1,157 @@
+---
+title: "lab6 BGGN Homework"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r cars}
+summary(cars)
+```
+
+```{r}
+plot(1:5, col = "blue", type = "o")
+```
+
+
+```{r}
+x <- c(1:30)
+x
+```
+the mean of your data is `r mean(x)`.
+
+```{r}
+y<- read.csv("~/Documents/UCSD_Neuro_Coursework/BGGN213/test1.txt", header = TRUE)
+y
+```
+
+```{r}
+z <- read.table("test2.txt", header = TRUE, sep = "$")
+z
+```
+
+```{r}
+x <- read.table("test3.txt", header = FALSE)
+x
+```
+
+Our first function
+
+Toy example of 'add' with input 'x' and 'y'
+
+```{r}
+add <- function(x, y=1) {
+ # Sum the input x and y
+ x + y
+}
+```
+
+```{r}
+add( c(1,2,3))
+```
+
+```{r}
+x <- c(22, 10, 6, 4)
+rng <- range(x)
+x <- (x - rng[1]) / (rng[2] - rng[1])
+```
+
+```{r}
+rescale <- function(x) {
+ rng <-range(x)
+ (x - rng[1]) / (rng[2] - rng[1])
+}
+```
+
+test this function
+
+```{r}
+rescale(c(1:10, 30, 100))
+```
+
+```{r}
+rescale( c(1,2,NA,3,10) )
+```
+
+O fuck just got NA's, gotta add na.rm = TRUE to range options
+
+```{r}
+rescale2 <- function(x) {
+ rng <-range(x, na.rm = TRUE)
+ (x - rng[1]) / (rng[2] - rng[1])
+}
+
+rescale2( c(1:10,NA) )
+
+```
+
+even fancier version, with a plot this time
+
+```{r}
+rescale3 <- function(x, na.rm=TRUE, plot=FALSE) {
+ if(na.rm) {
+ rng <-range(x, na.rm=TRUE)
+ } else {
+ rng <-range(x)
+ }
+ print("Hello")
+ answer <- (x - rng[1]) / (rng[2] - rng[1])
+ print("is it me you are looking for?")
+ if(plot) {
+ plot(answer, typ="b", lwd=4)
+ }
+ print("I can see it in ...")
+}
+
+```
+
+```{r}
+rescale3(c(1:10,NA),plot = TRUE)
+```
+
+
+## Working with the bio3d package
+
+To use functions from any package we have installed, we use the `library()` function
+
+```{r}
+library(bio3d)
+```
+
+#initial run of example code
+```{r}
+library(bio3d)
+s1 <- read.pdb("4AKE") # kinase with drug
+s2 <- read.pdb("1AKE") # kinase no drug
+s3 <- read.pdb("1E4Y") # kinase with drug
+s1.chainA <- trim.pdb(s1, chain="A", elety="CA")
+s2.chainA <- trim.pdb(s2, chain="A", elety="CA")
+s3.chainA <- trim.pdb(s3, chain="A", elety="CA")
+s1.b <- s1.chainA$atom$b
+s2.b <- s2.chainA$atom$b
+s3.b <- s3.chainA$atom$b
+plotb3(s1.b, sse=s1.chainA, typ="l", ylab="Bfactor")
+plotb3(s2.b, sse=s2.chainA, typ="l", ylab="Bfactor")
+plotb3(s3.b, sse=s3.chainA, typ="l", ylab="Bfactor")
+
+hc <- hclust( dist( rbind(s1.b, s2.b, s3.b) ) )
+plot(hc)
+```
+
+
+```{r}
+s1 <- read.pdb("4AKE") # kinase with drug
+s1
+```
+
+```{r}
+plotb3(s1.b, sse=s1.chainA, typ="l", ylab="Bfactor")
+points(s2.b, col="blue", typ = "l")
+points(s3.b, col = "red", typ = "l")
+```
+
+
+
