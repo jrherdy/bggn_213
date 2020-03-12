@@ -1,0 +1,171 @@
+---
+title: "class12: Structural Bioinformatics"
+author: "Joseph Herdy"
+date: "2/14/2020"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## PDB Statistics
+
+Download a CSV file from the PDB site (accessible from “Analyze” > “PDB Statistics” > “by Experimental Method and Molecular Type”. Move this CSV file into your RStudio project and use it to answer the following questions:
+
+
+
+
+
+
+Q: What percentage of structures in the PDB are solved by X-Ray and Electron Microscopy.
+
+
+```{r}
+stats <- read.csv("Data Export Summary.csv", row.names = 1)
+
+ans <- round(stats$Total / sum(stats$Total) * 100, 2)
+names(ans) <- rownames(stats)
+ans
+```
+
+Q: What proportion of structures in the PDB are protein?
+
+```{r}
+
+round(sum(stats$Proteins) / sum(stats$Total) *100,2) 
+
+```
+
+Q: Type HIV in the PDB website search box on the home page and determine how many HIV-1 protease structures are in the current PDB?
+
+use bio3d package from CRAN
+
+```{r}
+library(bio3d)
+
+pdb <- read.pdb("1HSG")
+pdb
+```
+
+## Comparative structure analysis of Adenylate Kinase
+
+Starting from only one Adk PDB identifier (PDB ID: 1AKE) we will search the entire PDB for related structures using BLAST, fetch, align and superpose the identified structures, perform PCA and finally calculate the normal modes of each individual structure in order to probe for potential differences in structural flexibility.
+
+
+# Search and retrieve ADK structures
+
+```{r}
+library(bio3d)
+aa <- get.seq("1ake_A")
+aa
+
+```
+
+# Blast or hmmer search 
+
+```{r}
+b <- blast.pdb(aa)
+
+```
+
+
+# Plot a summary of search results
+
+```{r}
+hits <- plot(b)
+
+```
+
+# List out some 'top hits'
+
+```{r}
+head(hits$pdb.id)
+
+```
+
+```{r}
+hits <- NULL
+hits$pdb.id <- c('1AKE_A','4X8M_A','6S36_A','6RZE_A','4X8H_A','3HPR_A','1E4V_A','5EJE_A','1E4Y_A','3X2S_A','6HAP_A','6HAM_A','4K46_A','4NP6_A','3GMT_A','4PZL_A')
+
+```
+
+
+# Download releated PDB files
+```{r}
+files <- get.pdb(hits$pdb.id, path="pdbs", split=TRUE, gzip=TRUE)
+
+```
+
+## Align and superpose structures
+
+Next we will use the pdbaln() function to align and also optionally fit (i.e. superpose) the identified PDB structures.
+
+```{r}
+pdbs <- pdbaln(files, fit = TRUE, exefile="msa")
+```
+
+
+# Vector containing PDB codes for figure axis
+```{r}
+ids <- basename.pdb(pdbs$id)
+
+```
+
+# Draw schematic alignment
+```{r}
+plot(pdbs, labels=ids)
+
+```
+
+## Annotate collected PDB structures
+
+```{r}
+anno <- pdb.annotate(ids)
+unique(anno$source)
+anno
+
+
+```
+
+
+
+# Perform PCA
+```{r}
+pc.xray <- pca(pdbs)
+plot(pc.xray)
+```
+
+
+
+# Calculate RMSD
+```{r}
+rd <- rmsd(pdbs)
+
+```
+
+
+# Structure-based clustering
+```{r}
+hc.rd <- hclust(dist(rd))
+grps.rd <- cutree(hc.rd, k=3)
+
+plot(pc.xray, 1:2, col="grey50", bg=grps.rd, pch=21, cex=1)
+```
+
+
+
+# Visualize first principal component
+```{r}
+pc1 <- mktrj(pc.xray, pc=1, file="pc_1.pdb")
+view(pc1)
+
+```
+
+
+
+
+
+
+
+

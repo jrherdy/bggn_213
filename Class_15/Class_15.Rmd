@@ -1,0 +1,70 @@
+---
+title: "Class_15"
+author: "Joseph Herdy"
+date: "2/26/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Loading in genotype data that we downloaded from ensemble
+
+```{r}
+geno.data <- read.csv("373531-SampleGenotypes-Homo_sapiens_Variation_Sample_rs8067378.csv")
+```
+
+# What proportion of these data are G/G?
+
+```{r}
+table(geno.data$Genotype..forward.strand.)
+
+
+```
+
+## RNAseq analysis for different genotypes of this SNP
+
+```{r}
+expr.data <- read.table(file = "rs8067378_ENSG00000172057.6.txt")
+summary(expr.data)
+```
+
+## get all rows that have G/G
+```{r}
+expr.data[expr.data$geno == "G/G", ]
+```
+
+## get the expression values from these rows
+```{r}
+expr.data[expr.data$geno == "G/G", ]$exp
+```
+
+##plot the G/G expression values
+
+```{r}
+hist(expr.data[expr.data$geno == "G/G", ]$exp)
+mean(expr.data[expr.data$geno == "G/G", ]$exp)
+
+```
+
+
+
+##boxplot of the genotypes
+```{r}
+plot(expr.data$exp, x = expr.data$geno)
+
+```
+
+##Boxplot using the actual boxplot function
+
+```{r}
+boxplot(exp ~ geno , data = expr.data, notch = TRUE)
+```
+
+
+## How many people in this dataset? 
+```{r}
+nrow(expr.data)
+```
+
