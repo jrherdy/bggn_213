@@ -4,14 +4,20 @@ This is the coding catalog from [BGGN 213 Winter 2020](https://bioboot.github.io
 
 ## Content
 
-Class1:
+Links to the Rmarkdown files for the topics covered this quarter
 
-Class2:
+- Writing R Functions [1]
 
-Class3:
+- Machine Learning for Bioinformatics [2]
 
-Class4:
+- Unsupervised Learning in Cancer Cells [3]
 
-Class5
+- Structural Bioinformatics [4]
 
+- Transcriptomics [5]
 
+- Differential Expression Analysis [6]
+
+- Functional Gene Annotation [7]
+
+- Network Analysis [8]
